@@ -28,6 +28,8 @@ const integrationStyle = document.createElement('style');
 integrationStyle.textContent = `
  .main:has(#territory.active) .topbar .segmented,.main:has(#sources.active) .topbar .segmented{display:none}
  .workspace-section{padding:20px 0;border-top:1px solid var(--line);margin-top:18px;min-width:0}
+ section.workspace-section{padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:0 14px 36px rgba(16,32,51,.07)}
+ section.workspace-section>p:last-child{margin-bottom:0}
  .workspace-section h2{font-size:20px;margin:0 0 8px}.workspace-section h3{font-size:16px;margin:0 0 12px}
  .source-note,.workspace-section p{color:var(--muted);font-size:13px;line-height:1.55}
  .source-note{margin:14px 0}.filter-line{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0}
