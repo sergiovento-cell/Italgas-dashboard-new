@@ -54,7 +54,7 @@
     'Output': 'Numero di contenuti, iniziative o eventi prodotti. L\'unita indicata varia per tipo di attivita.',
     'Risultato': 'Esito osservato, ad esempio visite, interazioni o partecipanti. Metriche con unita differenti non vanno sommate.',
     'Periodo precedente': 'Valore della stessa metrica nel periodo di confronto. Non disponibile quando manca una rilevazione precedente.',
-    "Alpha · dal segnale all'attivazione": 'Collega insight esterni e territoriali a un bisogno, a un\'agenzia candidata e a una proposta da validare. Non acquisisce dati raw individuali.',
+    "Insight e opportunità territoriali": 'Collega insight esterni e territoriali a un bisogno, a un\'agenzia candidata e a una proposta da validare.',
     'Conoscenza della customer base': 'Contesto aggiuntivo sui bisogni potenziali, ricavato da insight comportamentali e territoriali e non da record individuali.',
     'Bisogno emerso': 'Esigenza suggerita dagli insight territoriali. E un\'ipotesi da verificare prima di pianificare un\'attivazione.',
     'Agenzia candidata': 'Presidio ipotizzato per sviluppare la proposta sul territorio. I nomi sono segnaposto e non indicano incarichi attivi.',
@@ -106,7 +106,7 @@
   assignSources(['Brand perception','Percezione del brand'], 'Indagini di percezione locali con campione e questionario dichiarati. Rilevazioni simulate nel prototipo; non derivate da Alpha o dal sentiment.');
   assignSources(['Attivita e risultati osservati','Risultato','Periodo precedente'], 'Report attivita; web analytics autorizzati per visite; analytics social per interazioni; rassegna e web per uscite e citazioni; registrazioni eventi per partecipanti.');
   assignSources(['Territorio / attivita','Canale e fonte','Output','Attribuzione geografica'], 'Registro attivita e report delle agenzie; metadati dei contenuti stampa, social e web.');
-  assignSources(["Alpha · dal segnale all'attivazione",'Conoscenza della customer base','Bisogno emerso','Ruolo di Alpha'], 'Alpha: insight comportamentali e territoriali, senza dati raw individuali. Interpretazione e attivazione a cura del team.');
+  assignSources(["Insight e opportunità territoriali",'Conoscenza della customer base','Bisogno emerso','Ruolo di Alpha'], 'Alpha: insight comportamentali e territoriali, senza dati raw individuali. Interpretazione e attivazione a cura del team.');
   assignSources(['Agenzia candidata'], 'Anagrafica delle agenzie e competenze territoriali del team; insight Alpha come contesto del bisogno, non come assegnazione automatica.');
   assignSources(['Proposta da valutare'], 'Insight Alpha; pianificazione e valutazione del team comunicazione. Non una proposta gia approvata da Alpha.');
   assignSources(['Competitor e confronti omogenei','Perimetro del confronto','Menzioni pubbliche','Quota delle menzioni'], 'Rassegna stampa; social listening pubblico; web aperto. Stesso panel e periodo; esclusi Alpha, analytics privati e web chiuso.');
