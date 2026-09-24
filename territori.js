@@ -30,6 +30,9 @@ integrationStyle.textContent = `
  .workspace-section{padding:20px 0;border-top:1px solid var(--line);margin-top:18px;min-width:0}
  section.workspace-section{padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:0 14px 36px rgba(16,32,51,.07)}
  section.workspace-section>p:last-child{margin-bottom:0}
+ .territory-summary{padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 14px 36px rgba(16,32,51,.07)}
+ .territory-summary>.workspace-section{padding:0;border:0;margin:0}
+ .territory-summary .territory-metrics{margin-bottom:0}
  .workspace-section h2{font-size:20px;margin:0 0 8px}.workspace-section h3{font-size:16px;margin:0 0 12px}
  .source-note,.workspace-section p{color:var(--muted);font-size:13px;line-height:1.55}
  .source-note{margin:14px 0}.filter-line{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0}
@@ -57,8 +60,11 @@ for (const nav of document.querySelectorAll('.nav,.mobile-nav')) {
 }
 document.querySelector('main').insertAdjacentHTML('beforeend', `
  <section id="territory" class="view">
+  <div class="territory-summary">
   <header class="workspace-section"><div class="eyebrow">Comunicazione e territori</div><h2>Analisi territoriale</h2><p>Sentiment, menzioni e percezione del brand nelle aree presidiate.</p></header>
   <div class="filter-line"><label>Territorio<select id="area-filter"><option value="all">Tutte le aree</option>${areas.map(a=>`<option>${a.name}</option>`).join('')}</select></label><label>Attivita / canale<select id="channel-filter"><option value="all">Tutte le attivita</option>${channels.map(c=>`<option>${c}</option>`).join('')}</select></label><label>Periodo territoriale<select id="territory-period"><option value="current">14 - 20 settembre 2026</option><option value="previous">7 - 13 settembre 2026</option></select></label></div>
+  <div id="territory-summary-metrics" aria-live="polite"></div>
+  </div>
   <div id="territory-content" aria-live="polite"></div>
  </section>
  <section id="sources" class="view">
@@ -87,6 +93,7 @@ function renderTerritory(){
  <section class="workspace-section"><h3>Percezione del brand</h3>${(area?[area]:areas).map(a=>`<p><strong>${a.name}: ${previous?a.previous:a.perception}% favorevoli</strong><br>${previous?'Rilevazione precedente':((a.perception-a.previous)>0?'+':'')+(a.perception-a.previous)+' punti vs rilevazione precedente'} · campione ${a.survey}</p>`).join('')}<p class="source-note">Fonte: rilevazione locale simulata, campioni diversi e non ponderati. La percezione non deriva dal sentiment dei media e non cambia con il filtro canale.</p></section></div>
  <section class="workspace-section"><h3>Attivita e risultati osservati</h3><div class="data-scroll"><table class="data-table"><thead><tr><th>Territorio / attivita</th><th>Canale e fonte</th><th>Output</th><th>Risultato</th><th>Periodo precedente</th></tr></thead><tbody>${rows.map(r=>`<tr><td><strong>${r.area}</strong><small>${r.title}</small></td><td>${r.channel}<small>${sourceCatalog.find(s=>s[0]===r.source)[1]}</small></td><td>${previous?Math.max(1,r.outputs-1):r.outputs}<small>${r.channel==='Eventi offline'?'eventi':'contenuti / iniziative'}</small></td><td>${previous?r.before:r.result}<small>${r.metric}</small></td><td>${previous?'Non disponibile':r.before+' '+r.metric}</td></tr>`).join('')}</tbody></table></div><p class="source-note">Confronto descrittivo tra periodi: la variazione non dimostra un effetto causale della comunicazione. Output e risultati di natura diversa non vengono sommati.</p></section>
  <section class="workspace-section"><div class="panel-head"><h3>Alpha · dal segnale all'attivazione</h3><span class="pill">Solo insight</span></div><p>Insight esterni, comportamentali e territoriali arricchiscono la conoscenza della customer base: bisogno emergente, agenzia in grado di attivarlo e proposta pertinente.</p>${(area?[area]:areas).map(a=>`<dl class="territory-callout"><dt>${a.name} · bisogno emerso</dt><dd>${a.need}</dd><dt>Agenzia candidata</dt><dd>${a.agency} (segnaposto da validare)</dd><dt>Proposta da valutare</dt><dd>${a.proposal}</dd></dl>`).join('')}<p class="source-note">Fonte: insight Alpha simulati. Nessun record individuale o dato raw acquisito. Agenzie e proposte sono ipotesi da validare con il team territoriale; non indicano incarichi attivi.</p></section>`;
+ document.querySelector('#territory-summary-metrics').replaceChildren(document.querySelector('#territory-content .territory-metrics'));
  document.querySelectorAll('[data-area]').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#area-filter').value=b.dataset.area;renderTerritory();}));
 }
 for(const id of ['area-filter','channel-filter','territory-period'])document.getElementById(id).addEventListener('change',renderTerritory);
