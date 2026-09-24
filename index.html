@@ -1224,13 +1224,13 @@
         </section>
 
         <section id="media" class="view">
-          <div class="panel">
+          <div class="panel coverage-panel">
             <div class="panel-head">
               <div>
                 <h2>Coverage intelligence</h2>
-                <p>Una vista unica per distinguere volume, qualita della copertura e priorita di relazione con giornalisti e testate.</p>
+                <p>Articoli, audience potenziale e priorita di relazione con giornalisti e testate.</p>
               </div>
-              <span class="pill">42 uscite</span>
+              <div class="coverage-total"><strong>42</strong><span>uscite monitorate</span></div>
             </div>
             <div class="tabs">
               <button class="active" type="button">Tutte</button>
@@ -1239,34 +1239,34 @@
               <button type="button">Opportunita</button>
             </div>
             <div class="table">
-              <div class="row header coverage"><div>Articolo</div><div>Testata / Autore</div><div>Audience</div><div>Valore</div><div>Priorita</div></div>
+              <div class="row header coverage"><div>Articolo</div><div>Testata / Autore</div><div>Audience</div><div>AVE stimato</div><div>Priorita</div></div>
               <div class="row coverage">
                 <div><strong>Reti intelligenti, la strategia Italgas prende velocita</strong><span>Oggi · 08:10 · positivo</span></div>
-                <div>Milano Finanza<span>Sara Monaci</span></div>
-                <div>1.8M UU<span>2.6M OTS</span></div>
-                <div>€165k<span class="pill">Ripreso</span></div>
-                <div>Opportunita ESG</div>
+                <div><span class="coverage-caption">Testata / Autore</span>Milano Finanza<span>Sara Monaci</span></div>
+                <div><span class="coverage-caption">Audience</span>1.8M UU<span>2.6M OTS</span></div>
+                <div><span class="coverage-caption">AVE stimato</span>€165k<span class="coverage-caption message-caption">Messaggio ripreso</span><span class="pill">Ripreso</span></div>
+                <div><span class="coverage-caption">Priorita</span>Opportunita ESG</div>
               </div>
               <div class="row coverage">
                 <div><strong>Tariffe e investimenti, utilities sotto osservazione</strong><span>Oggi · 07:42 · neutro/critico</span></div>
-                <div>Il Sole 24 Ore<span>Laura Serafini</span></div>
-                <div>2.4M UU<span>3.8M OTS</span></div>
-                <div>€280k<span class="pill warn">Parziale</span></div>
-                <div>Q&A interno</div>
+                <div><span class="coverage-caption">Testata / Autore</span>Il Sole 24 Ore<span>Laura Serafini</span></div>
+                <div><span class="coverage-caption">Audience</span>2.4M UU<span>3.8M OTS</span></div>
+                <div><span class="coverage-caption">AVE stimato</span>€280k<span class="coverage-caption message-caption">Messaggio ripreso</span><span class="pill warn">Parziale</span></div>
+                <div><span class="coverage-caption">Priorita</span>Q&A interno</div>
               </div>
               <div class="row coverage">
                 <div><strong>Transizione energetica, il ruolo delle infrastrutture</strong><span>Ieri · 18:20 · positivo</span></div>
-                <div>Corriere Economia<span>Sara Monaci</span></div>
-                <div>1.6M UU<span>2.1M OTS</span></div>
-                <div>€132k<span class="pill">Ripreso</span></div>
-                <div>Amplificare</div>
+                <div><span class="coverage-caption">Testata / Autore</span>Corriere Economia<span>Sara Monaci</span></div>
+                <div><span class="coverage-caption">Audience</span>1.6M UU<span>2.1M OTS</span></div>
+                <div><span class="coverage-caption">AVE stimato</span>€132k<span class="coverage-caption message-caption">Messaggio ripreso</span><span class="pill">Ripreso</span></div>
+                <div><span class="coverage-caption">Priorita</span>Amplificare</div>
               </div>
               <div class="row coverage">
                 <div><strong>Concessioni locali, sindaci chiedono chiarezza</strong><span>Ieri · 12:05 · misto</span></div>
-                <div>Stampa locale<span>redazioni territoriali</span></div>
-                <div>680k UU<span>1.2M OTS</span></div>
-                <div>€48k<span class="pill risk">Debole</span></div>
-                <div>Monitor territorio</div>
+                <div><span class="coverage-caption">Testata / Autore</span>Stampa locale<span>redazioni territoriali</span></div>
+                <div><span class="coverage-caption">Audience</span>680k UU<span>1.2M OTS</span></div>
+                <div><span class="coverage-caption">AVE stimato</span>€48k<span class="coverage-caption message-caption">Messaggio ripreso</span><span class="pill risk">Debole</span></div>
+                <div><span class="coverage-caption">Priorita</span>Monitor territorio</div>
               </div>
             </div>
           </div>
@@ -1423,6 +1423,7 @@
   </div>
 
   <script src="territori.js"></script>
+  <script src="tooltips.js"></script>
   <script>
     const navButtons = document.querySelectorAll('[data-view]');
     const views = document.querySelectorAll('.view');
