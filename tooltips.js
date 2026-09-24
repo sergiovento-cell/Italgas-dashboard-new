@@ -20,7 +20,7 @@
     'Stampa economica': 'Copertura nelle testate economiche e finanziarie. Le OTS indicano esposizioni potenziali, non lettori unici.',
     'Testate locali': 'Copertura nelle testate territoriali. Le audience possono sovrapporsi e non identificano automaticamente la residenza dei lettori.',
     'Trade e settore': 'Copertura nelle testate specializzate di settore. Il valore economico equivalente non misura da solo la rilevanza per gli stakeholder.',
-    'Presidio territoriale': 'Sintesi dei segnali per area: tono dei media e percezione del brand provengono da misurazioni distinte.',
+    'Presidio territoriale': 'Lettura dei bisogni e delle opportunita territoriali guidata dagli insight Alpha, integrata con tono dei media e percezione del brand. Questi ultimi provengono da misurazioni distinte, non da Alpha.',
     'Coverage intelligence': 'Rassegna che collega articolo, autore, audience potenziale, AVE e priorita di approfondimento.',
     'Articolo': 'Titolo e metadati della singola uscita inclusa nel campione di rassegna.',
     'Testata / Autore': 'Fonte editoriale e firma dell\'articolo. Le attribuzioni nel prototipo sono illustrative.',
@@ -75,6 +75,43 @@
   };
   sourceCatalog.forEach(source => { definitions[source[1]] = source[3]; });
   const normalize = text => text.trim().replace(/\s+/g, ' ').toLowerCase();
+  // These are planned inputs, not claims of live integrations or measured data.
+  const sources = new Map();
+  function assignSources(labels, value) {
+    labels.forEach(label => sources.set(normalize(label), value));
+  }
+  assignSources(['Uscite monitorate','Articolo','Testata / Autore','Giornalisti piu attivi'], 'Rassegna stampa cartacea e online, con firme e metadati editoriali.');
+  assignSources(['AVE stimato','Online nazionale','Trade e settore'], 'Rassegna stampa; tariffe pubblicitarie e metodo AVE del fornitore, da definire.');
+  assignSources(['OTS potenziale','Stampa economica','Testate locali'], 'Rassegna stampa; dati di audience delle testate e metodo di stima OTS del fornitore.');
+  assignSources(['Utenti unici digital'], 'Dati di audience mensile delle testate digitali, da fornitore da definire. Non analytics del sito Italgas.');
+  assignSources(['Audience','Audience e persone uniche'], 'Dati di audience delle testate, con periodo e metodo di deduplicazione dichiarati.');
+  assignSources(['Peso media e reach'], 'Rassegna stampa; dati di audience delle testate; tariffe pubblicitarie e metodi di stima AVE e OTS del fornitore.');
+  assignSources(['Coverage intelligence'], 'Rassegna stampa; dati di audience delle testate; tariffe pubblicitarie. Priorita definite con il team comunicazione.');
+  assignSources(['Sentiment score','Narrative attive','Digitalizzazione reti','Sostenibilita e ESG','Regolatorio','Territori e concessioni'], 'Rassegna stampa; classificazione tematica e del tono da validare con il team comunicazione.');
+  assignSources(['Tier-1 coverage'], 'Rassegna stampa; panel delle testate strategiche definito dal team comunicazione.');
+  assignSources(['Executive brief','3 segnali da valutare','Copertura rilevante','Priorita','Response priority score'], 'Rassegna stampa; criteri di rilevanza e priorita del team comunicazione. Sintesi e valutazioni derivate, non dati grezzi del fornitore.');
+  assignSources(['Valore','Messaggio ripreso'], 'Rassegna stampa; comunicati e messaggi chiave approvati per verificare la ripresa. Per AVE: tariffe e metodo del fornitore.');
+  definitions['Messaggio ripreso'] = 'Presenza del messaggio chiave aziendale nell\'articolo, da verificare rispetto ai materiali approvati. Non misura audience o valore economico.';
+  assignSources(['Segnali dagli altri canali'], 'Social proprietari e top management (analytics autorizzati); social listening; web aperto.');
+  assignSources(['Leadership sostenibilita','ESG message quality'], 'Rassegna stampa; messaggi ESG approvati e documentazione aziendale a supporto. Valutazione editoriale da validare.');
+  assignSources(['Proactive coverage'], 'Rassegna stampa; registro attivita e comunicati diffusi. Attribuzione alle iniziative da verificare.');
+  assignSources(['Greenwashing risk'], 'Claim nella copertura; documentazione ESG e prove aziendali verificabili. Necessaria revisione specialistica, non un giudizio automatico.');
+  assignSources(['Editorial opportunity','Opportunita editoriali'], 'Rassegna stampa; calendario editoriale, progetti ed evidenze forniti dal team. Opportunita elaborate, non risultati misurati.');
+  assignSources(['Stakeholder heatmap','Attenzione','Tema dominante'], 'Rassegna stampa; mappa stakeholder e contesto forniti dal team relazioni esterne.');
+  assignSources(['Azione','Riepilogo decisionale'], 'Valutazioni e registro operativo del team comunicazione, a partire dai contenuti monitorati.');
+  assignSources(['Priorita: Regolatorio ARERA'], 'Rassegna stampa; atti ufficiali ARERA da verificare; valutazione del team public affairs.');
+  assignSources(['Presidio territoriale'], 'Alpha: insight comportamentali e territoriali sui bisogni e sulle opportunita di attivazione. A integrazione: rassegna stampa e social listening per il tono; indagini locali per la percezione del brand.');
+  assignSources(['Analisi territoriale'], 'Rassegna stampa, social e web per i contenuti; indagini locali per la percezione; report attivita e analytics autorizzati per i risultati; Alpha per gli insight di attivazione.');
+  assignSources(['Menzioni attribuite','Tono positivo','Tono negativo','Confronto territoriale'], 'Contenuti di rassegna, social e web attribuibili al territorio; classificazione del tono. Registri di campagne ed eventi danno contesto, non producono menzioni o sentiment da soli.');
+  assignSources(['Brand perception','Percezione del brand'], 'Indagini di percezione locali con campione e questionario dichiarati. Rilevazioni simulate nel prototipo; non derivate da Alpha o dal sentiment.');
+  assignSources(['Attivita e risultati osservati','Risultato','Periodo precedente'], 'Report attivita; web analytics autorizzati per visite; analytics social per interazioni; rassegna e web per uscite e citazioni; registrazioni eventi per partecipanti.');
+  assignSources(['Territorio / attivita','Canale e fonte','Output','Attribuzione geografica'], 'Registro attivita e report delle agenzie; metadati dei contenuti stampa, social e web.');
+  assignSources(["Alpha · dal segnale all'attivazione",'Conoscenza della customer base','Bisogno emerso','Ruolo di Alpha'], 'Alpha: insight comportamentali e territoriali, senza dati raw individuali. Interpretazione e attivazione a cura del team.');
+  assignSources(['Agenzia candidata'], 'Anagrafica delle agenzie e competenze territoriali del team; insight Alpha come contesto del bisogno, non come assegnazione automatica.');
+  assignSources(['Proposta da valutare'], 'Insight Alpha; pianificazione e valutazione del team comunicazione. Non una proposta gia approvata da Alpha.');
+  assignSources(['Competitor e confronti omogenei','Perimetro del confronto','Menzioni pubbliche','Quota delle menzioni'], 'Rassegna stampa; social listening pubblico; web aperto. Stesso panel e periodo; esclusi Alpha, analytics privati e web chiuso.');
+  assignSources(['Panel da concordare'], 'Panel competitor concordato con il team comunicazione.');
+  assignSources(['Fonti e copertura','Fonti escluse','Regole di aggregazione','Unita di misura separate','Riprese e duplicati'], 'Catalogo delle integrazioni e regole metodologiche del progetto, da validare con i fornitori.');
   const descriptions = new Map(Object.entries(definitions).map(([key, value]) => [normalize(key), value]));
   const style = document.createElement('style');
   style.textContent = `
@@ -86,6 +123,8 @@
     .kpi .tooltip-info{position:absolute;top:5px;right:5px;margin:0;width:14px;height:14px;min-width:14px;font-size:10px}
     .dashboard-tooltip{position:fixed;z-index:1000;width:max-content;max-width:min(330px,calc(100vw - 24px));padding:12px 14px;background:#102033;color:white;border:1px solid #526476;border-radius:6px;box-shadow:0 6px 24px #10203330;font:400 13px/1.55 system-ui,sans-serif;letter-spacing:0;overflow-wrap:anywhere}
     .dashboard-tooltip[hidden]{display:none}
+    .tooltip-sources{margin-top:10px;padding-top:9px;border-top:1px solid #526476;color:#c4cfda;font-size:11px;line-height:1.5}
+    .tooltip-sources-label{font-weight:600}
     @media(hover:none){.tooltip-info,.tooltip-text{cursor:inherit}.tooltip-text{text-decoration:none}}
   `;
   document.head.append(style);
@@ -107,10 +146,12 @@
     main.querySelectorAll('h2,h3,h4,.eyebrow,.kpi .label,.bar-meta>span,.legend-row>strong,.row.header>div,th,dt,.metric-caption,.coverage-caption').forEach(element => {
       if (element.querySelector('.tooltip-info') || element.dataset.description) return;
       const description = descriptions.get(normalize(element.textContent));
+      const source = sources.get(normalize(element.textContent));
       if (description) {
         // Section titles and standalone KPI titles keep an icon; inner labels use text hover.
         if (!element.matches('h2,h3,.eyebrow,.kpi .label')) {
           element.dataset.description = description;
+          if (source) element.dataset.sources = source;
           element.classList.add('tooltip-text');
           return;
         }
@@ -118,6 +159,7 @@
         icon.type = 'button'; icon.className = 'tooltip-info';
         icon.setAttribute('aria-label', 'Informazioni: ' + element.textContent.trim());
         icon.textContent = 'i'; icon.dataset.description = description;
+        if (source) icon.dataset.sources = source;
         element.append(icon);
       }
     });
@@ -132,6 +174,14 @@
   function show(element) {
     hide(); active = element;
     tooltip.textContent = element.dataset.description;
+    if (element.dataset.sources) {
+      const details = document.createElement('div');
+      details.className = 'tooltip-sources';
+      const label = document.createElement('span');
+      label.className = 'tooltip-sources-label'; label.textContent = 'Fonti: ';
+      details.append(label, document.createTextNode(element.dataset.sources));
+      tooltip.append(details);
+    }
     tooltip.hidden = false;
     element.setAttribute('aria-describedby', tooltip.id);
     const rect = element.getBoundingClientRect();

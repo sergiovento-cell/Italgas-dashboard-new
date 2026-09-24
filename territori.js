@@ -1,11 +1,15 @@
 // Demo observations share a single model across territory, channel and source views.
 const sourceCatalog = [
   ['press', 'Rassegna stampa', 'Cartacea e online', 'Articoli, citazioni, tono e territorio citato. Fornitore da definire.', 'Esempio'],
+  ['audience', 'Dati di audience', 'Stampa e testate digitali', 'Rilevazioni o stime del pubblico delle testate, con periodo e metodo dichiarati. Alimentano OTS e utenti unici mensili, non le letture del singolo articolo. Fornitore da definire.', 'Esempio'],
+  ['rates', 'Tariffe pubblicitarie', 'Stima AVE', 'Listini o stime del fornitore, abbinati a formato e dimensione della copertura. Metodo AVE da concordare; non misura il ritorno economico.', 'Esempio'],
+  ['survey', 'Indagini di percezione', 'Rilevazioni locali', 'Risposte aggregate a indagini sul brand, con domanda, campione, periodo e ponderazione dichiarati. Nel prototipo le rilevazioni sono simulate; non derivano da Alpha o dal tono della stampa.', 'Esempio'],
+  ['analytics', 'Web analytics autorizzati', 'Siti e campagne proprietarie', 'Visite e interazioni sui siti gestiti, con tracciamento delle campagne ove disponibile. Non forniscono audience delle testate esterne; la geografia delle visite non prova la residenza.', 'Esempio'],
   ['owned', 'Social proprietari', 'Account corporate', 'Post e interazioni aggregate da analytics autorizzati.', 'Esempio'],
   ['listening', 'Social listening', 'Menzioni pubbliche', 'Menzioni del brand e conversazioni pubbliche, ove accessibili.', 'Esempio'],
   ['leaders', 'Top management', 'Canali dei portavoce', 'Post pubblici e metriche dei canali autorizzati; separati dai social corporate.', 'Esempio'],
   ['web', 'Web aperto', 'Siti, blog e forum', 'Contenuti pubblici con attribuzione geografica verificabile.', 'Esempio'],
-  ['activities', 'Registro attivita', 'Campagne ed eventi', 'Output online/offline con perimetro dichiarato; report dei team e delle agenzie.', 'Esempio'],
+  ['activities', 'Registro attivita', 'Campagne ed eventi', 'Output online/offline con perimetro dichiarato; report dei team e delle agenzie. Partecipanti da registrazioni o conteggi degli eventi; visite da web analytics autorizzati, non dal solo registro.', 'Esempio'],
   ['alpha', 'Alpha', 'Insight esterni', 'Segnali comportamentali e territoriali per arricchire la conoscenza della customer base. Solo insight, nessun dato raw.', 'Insight'],
   ['closed', 'Web chiuso', 'Accessi su licenza', 'Inclusione subordinata a disponibilita, licenza e autorizzazione. Escluso dai conteggi.', 'Non disponibile']
 ];
@@ -27,6 +31,22 @@ const observations = areas.flatMap((area, i) => channels.map((channel, j) => {
 const integrationStyle = document.createElement('style');
 integrationStyle.textContent = `
  .main:has(#territory.active) .topbar .segmented,.main:has(#sources.active) .topbar .segmented{display:none}
+ .secondary-nav{position:relative;z-index:1;display:grid;gap:4px;margin-top:auto;padding-top:18px;border-top:1px solid #ffffff26}
+ .secondary-nav button{min-height:36px;padding:8px 10px;border:0;border-radius:6px;background:transparent;color:#bfcedb;font:inherit;font-size:13px;font-weight:500;line-height:1.4;text-align:left;cursor:pointer}
+ .secondary-nav button:hover:not(:disabled),.secondary-nav button[aria-selected="true"]{background:#ffffff12;color:white}
+ .secondary-nav button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+ .secondary-nav button:disabled{color:#92a9bd;cursor:default}
+ .secondary-nav-mobile,.mobile-utilities{display:none}
+ @media(min-width:981px){.sidebar{display:flex;flex-direction:column}.sidebar .side-note{margin-bottom:28px}}
+ @media(max-width:980px){
+ .mobile-utilities{display:block;position:relative;flex:0 0 44px;z-index:20}
+ .mobile-utilities summary{list-style:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:6px;background:white;color:var(--ink);cursor:pointer}
+ .mobile-utilities summary::-webkit-details-marker{display:none}
+ .mobile-utilities summary svg{width:22px;height:22px}
+ .mobile-utilities summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+ .secondary-nav-mobile{display:grid;position:absolute;right:0;top:52px;width:210px;max-width:calc(100vw - 36px);gap:4px;margin:0;padding:8px;border:1px solid var(--line);border-radius:6px;background:white;box-shadow:var(--shadow)}
+ .secondary-nav-mobile button{min-height:44px;color:var(--muted)}.secondary-nav-mobile button:disabled{color:#687b8c}.secondary-nav-mobile button:hover:not(:disabled),.secondary-nav-mobile button[aria-selected="true"]{color:var(--blue);background:var(--panel-soft)}
+ }
  .workspace-section{padding:20px 0;border-top:1px solid var(--line);margin-top:18px;min-width:0}
  section.workspace-section{padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:0 14px 36px rgba(16,32,51,.07)}
  section.workspace-section>p:last-child{margin-bottom:0}
@@ -117,7 +137,7 @@ integrationStyle.textContent = `
 `;
 document.head.append(integrationStyle);
 document.querySelector('.topbar .status').replaceChildren();
-document.querySelector('.mobile-header .status').textContent='Prototipo';
+document.querySelector('.mobile-header .status').remove();
 for (const nav of document.querySelectorAll('.nav,.mobile-nav')) {
   for (const [id, label] of [['territory','Analisi territoriale'],['sources','Fonti e copertura']]) {
     const button = document.createElement('button');
@@ -127,6 +147,35 @@ for (const nav of document.querySelectorAll('.nav,.mobile-nav')) {
       button.insertAdjacentHTML('afterbegin', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>');
     }
     nav.append(button);
+  }
+}
+for (const [primary, host, mobile] of [
+  [document.querySelector('.nav'), document.querySelector('.sidebar'), false],
+  [document.querySelector('.mobile-nav'), document.querySelector('.app'), true]
+]) {
+  const secondary = document.createElement('nav');
+  secondary.className = 'secondary-nav' + (mobile ? ' secondary-nav-mobile' : '');
+  secondary.setAttribute('aria-label', 'Navigazione secondaria' + (mobile ? ' mobile' : ''));
+  secondary.append(primary.querySelector('[data-view="sources"]'));
+  for (const label of ['Utente', 'Impostazioni']) {
+    const button = document.createElement('button');
+    button.type = 'button'; button.textContent = label;
+    button.disabled = true; button.title = 'Non disponibile nel prototipo';
+    secondary.append(button);
+  }
+  if (mobile) {
+    const menu = document.createElement('details');
+    menu.className = 'mobile-utilities';
+    menu.innerHTML = '<summary aria-label="Menu secondario" title="Menu secondario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></summary>';
+    menu.append(secondary);
+    document.querySelector('.mobile-header').append(menu);
+    secondary.addEventListener('click', event => { if (event.target.closest('[data-view]')) menu.open = false; });
+    document.addEventListener('click', event => { if (!menu.contains(event.target)) menu.open = false; });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary').focus(); }
+    });
+  } else {
+    host.append(secondary);
   }
 }
 document.querySelector('main').insertAdjacentHTML('beforeend', `
@@ -139,15 +188,15 @@ document.querySelector('main').insertAdjacentHTML('beforeend', `
   <div id="territory-content" aria-live="polite"></div>
  </section>
  <section id="sources" class="view">
-  <header class="workspace-section"><div class="eyebrow">Provenienza e perimetro</div><h2>Fonti e copertura</h2><p>Catalogo delle integrazioni previste.</p><div class="reading-note"><p><strong>Stato delle integrazioni</strong><br>Nessun connettore attivo. I contenuti visualizzati sono dimostrativi.</p></div></header>
+  <header class="workspace-section"><div class="eyebrow">Provenienza e perimetro</div><h2>Fonti e copertura</h2><p>Catalogo delle integrazioni previste.</p></header>
   <div class="source-grid">${sourceCatalog.map(s=>`<article class="source-entry"><div class="source-heading"><h3>${s[1]}</h3>${s[4]==='Esempio'?'':`<span class="pill ${s[0]==='closed'?'warn':''}">${s[4]}</span>`}</div><p class="source-scope">${s[2]}</p><details><summary>Perimetro e utilizzo</summary><p>${s[3]}</p><div class="reading-note"><p><strong>Ultima sincronizzazione</strong><br>Non disponibile · fonte da collegare.</p></div></details></article>`).join('')}</div>
   <section class="workspace-section"><h3>Competitor e confronti omogenei</h3><div class="reading-blocks"><div><h4>Panel da concordare</h4><p>Competitor A e B sono segnaposto.</p></div><div><h4>Perimetro del confronto</h4><p>Stesso periodo, territorio e insieme di fonti pubbliche.</p></div><div><h4>Fonti escluse</h4><p>Analytics privati, insight Alpha e web chiuso.</p></div></div><div class="data-scroll"><table class="data-table"><thead><tr><th>Panel</th><th>Menzioni pubbliche</th><th>Quota delle menzioni</th></tr></thead><tbody><tr><td>Italgas</td><td>120</td><td>40%</td></tr><tr><td>Competitor A</td><td>105</td><td>35%</td></tr><tr><td>Competitor B</td><td>75</td><td>25%</td></tr></tbody></table></div><div class="reading-note"><p><strong>Campione e periodo</strong><br>Menzioni stampa, social pubblici e web · 14 - 20 settembre 2026.<br>Campione distinto dalle 42 uscite della rassegna.</p></div></section>
   <section class="workspace-section"><h3>Regole di aggregazione</h3><div class="reading-blocks"><div><h4>Unita di misura separate</h4><p>Articoli, post, menzioni, interazioni e partecipanti mantengono conteggi distinti.</p></div><div><h4>Riprese e duplicati</h4><p>Le riprese vengono collegate alla notizia originaria. URL canonico o ID del contenuto identificano i duplicati.</p></div><div><h4>Attribuzione geografica</h4><p>Territorio citato, target della campagna e sede dell'evento sono dimensioni distinte: non equivalgono alla residenza del lettore.</p><p>I contenuti senza territorio affidabile restano nella categoria non attribuita, senza distribuirli artificialmente sulle regioni.</p></div><div><h4>Audience e persone uniche</h4><p>Reach, OTS e utenti unici delle testate non sono sommati come persone uniche.</p></div><div><h4>Ruolo di Alpha</h4><p>Gli insight arricchiscono il contesto decisionale e non aumentano i conteggi delle menzioni.</p></div></div></section>
  </section>
  <footer class="source-footer">Prototipo · dati dimostrativi · Fonti previste: rassegna stampa, social corporate e top management, listening, web, report attivita e Alpha. Web chiuso non disponibile. <button type="button" data-view="sources">Dettaglio fonti e metodologia</button></footer>
 `);
-document.querySelector('#overview').insertAdjacentHTML('beforeend', `<section class="workspace-section"><div class="panel-head"><div><h2>Presidio territoriale</h2><p>4 aree · Campagne, stampa locale, social, web ed eventi.</p></div><button class="text-link" type="button" data-view="territory">Apri analisi territoriale</button></div><div class="territory-highlights"><article class="territory-highlight attention"><h3>Campania</h3><p>Maggiore quota di menzioni negative nel campione.</p></article><article class="territory-highlight"><h3>Piemonte e Sicilia</h3><p>Percezione favorevole in crescita tra le due rilevazioni.</p></article></div><div class="territory-provenance"><p><strong>Fonti</strong>Rassegna e listening per il tono; rilevazione locale simulata per la brand perception; Alpha per gli insight di attivazione.</p></div></section>`);
-document.querySelector('#media').insertAdjacentHTML('beforeend', `<p class="source-note">Fonte: rassegna stampa cartacea e online, fornitore da definire. AVE, OTS e audience sono valori simulati; OTS indica esposizione potenziale, non lettori effettivi.</p><section class="workspace-section"><h2>Segnali dagli altri canali</h2><p>Campione multicanale · 14 - 20 settembre 2026 · conteggi distinti dalla rassegna.</p><div class="filter-line"><label>Fonte<select id="signal-filter"><option value="all">Tutte le fonti</option><option value="owned">Social proprietari</option><option value="listening">Menzioni pubbliche</option><option value="leaders">Top management</option><option value="web">Web aperto</option></select></label></div><div id="signal-feed" aria-live="polite"></div></section>`);
+document.querySelector('#overview').insertAdjacentHTML('beforeend', `<section class="workspace-section"><div class="panel-head"><div><h2>Presidio territoriale</h2><p>4 aree · Campagne, stampa locale, social, web ed eventi.</p></div><button class="text-link" type="button" data-view="territory">Apri analisi territoriale</button></div><div class="territory-highlights"><article class="territory-highlight attention"><h3>Campania</h3><p>Maggiore quota di menzioni negative nel campione.</p></article><article class="territory-highlight"><h3>Piemonte e Sicilia</h3><p>Percezione favorevole in crescita tra le due rilevazioni.</p></article></div></section>`);
+document.querySelector('#media').insertAdjacentHTML('beforeend', `<section class="workspace-section"><h2>Segnali dagli altri canali</h2><p>Campione multicanale · 14 - 20 settembre 2026 · conteggi distinti dalla rassegna.</p><div class="filter-line"><label>Fonte<select id="signal-filter"><option value="all">Tutte le fonti</option><option value="owned">Social proprietari</option><option value="listening">Menzioni pubbliche</option><option value="leaders">Top management</option><option value="web">Web aperto</option></select></label></div><div id="signal-feed" aria-live="polite"></div></section>`);
 const signals = [ ['owned','Piemonte','Post corporate sulle reti efficienti','12 post · 340 interazioni'],['listening','Campania','Conversazioni sui tempi dei cantieri','26 menzioni · tono misto'],['leaders','Nazionale, non attribuito','Intervento del portavoce sulla transizione','3 post · 180 interazioni'],['web','Lazio','Riprese delle informazioni di servizio','6 citazioni web'] ];
 function renderSignals(){const filter=document.querySelector('#signal-filter').value;document.querySelector('#signal-feed').innerHTML=signals.filter(s=>filter==='all'||s[0]===filter).map(s=>`<article class="workspace-section"><h3>${s[2]}</h3><p>${s[3]} · ${s[1]}</p><small>Fonte: ${sourceCatalog.find(f=>f[0]===s[0])[1]} · esempio simulato</small></article>`).join('');}
 document.querySelector('#signal-filter').addEventListener('change',renderSignals);renderSignals();
@@ -161,9 +210,9 @@ function renderTerritory(){
  document.querySelector('#territory-content').innerHTML=`
  <div class="territory-metrics"><article>Menzioni attribuite<strong>${total}</strong><small>Campione multicanale</small></article><article>Tono positivo<strong>${Math.round(positives/total*100)}%</strong><small>${positives} su ${total} menzioni</small></article><article>Tono negativo<strong>${Math.round(negatives/total*100)}%</strong><small>${negatives} su ${total}; altre neutre</small></article><article>Brand perception<strong>${area?(previous?area.previous:area.perception)+'%':'Per area'}</strong><small>${area?'Favorevoli · n = '+area.survey:'Rilevazioni locali separate'}</small></article></div>
  <div class="territory-layout"><section class="workspace-section"><h3>Confronto territoriale</h3><p>Quota di menzioni positive · stesso canale e periodo.</p><div class="territory-rank">${areas.map(a=>{const r=observations.filter(r=>r.area===a.name&&(channel==='all'||r.channel===channel));const n=r.reduce((s,r)=>s+(previous?r.previous:r.mentions),0);const p=r.reduce((s,r)=>s+(previous?Math.round(r.previous*r.positive/r.mentions):r.positive),0);const percent=Math.round(p/n*100);return `<button type="button" data-area="${a.name}" aria-pressed="${selected===a.name}"><span>${a.name}</span><span class="track"><span class="fill" style="display:block;--w:${percent}%;--c:var(--green)"></span></span><strong>${percent}%</strong></button>`;}).join('')}</div><p class="source-note">Attribuzione al territorio dell'attivita o citato nel contenuto. 24 menzioni nazionali/non attribuite escluse dal dettaglio territoriale.</p></section>
- <section class="workspace-section"><h3>Percezione del brand</h3>${(area?[area]:areas).map(a=>`<article class="perception-row"><h4>${a.name}</h4><div class="perception-value">${previous?a.previous:a.perception}%<small>favorevoli</small></div><p><span class="perception-change">${previous?'Rilevazione precedente':((a.perception-a.previous)>0?'+':'')+(a.perception-a.previous)+' punti'}</span>${previous?'':' rispetto alla rilevazione precedente'}<br>Campione: ${a.survey}</p></article>`).join('')}<div class="reading-note"><p><strong>Fonte e campione</strong><br>Rilevazione locale simulata; campioni diversi e non ponderati.</p><p><strong>Lettura del dato</strong><br>La percezione non deriva dal sentiment dei media e non cambia con il filtro canale.</p></div></section></div>
+ <section class="workspace-section"><h3>Percezione del brand</h3>${(area?[area]:areas).map(a=>`<article class="perception-row"><h4>${a.name}</h4><div class="perception-value">${previous?a.previous:a.perception}%<small>favorevoli</small></div><p><span class="perception-change">${previous?'Rilevazione precedente':((a.perception-a.previous)>0?'+':'')+(a.perception-a.previous)+' punti'}</span>${previous?'':' rispetto alla rilevazione precedente'}<br>Campione: ${a.survey}</p></article>`).join('')}<div class="reading-note"><p><strong>Campione</strong><br>Campioni diversi e non ponderati.</p><p><strong>Lettura del dato</strong><br>La percezione non deriva dal sentiment dei media e non cambia con il filtro canale.</p></div></section></div>
  <section class="workspace-section"><h3>Attivita e risultati osservati</h3><div class="data-scroll"><table class="data-table"><thead><tr><th>Territorio / attivita</th><th>Canale e fonte</th><th>Output</th><th>Risultato</th><th>Periodo precedente</th></tr></thead><tbody>${rows.map(r=>`<tr><td><strong>${r.area}</strong><small>${r.title}</small></td><td>${r.channel}<small>${sourceCatalog.find(s=>s[0]===r.source)[1]}</small></td><td>${previous?Math.max(1,r.outputs-1):r.outputs}<small>${r.channel==='Eventi offline'?'eventi':'contenuti / iniziative'}</small></td><td>${previous?r.before:r.result}<small>${r.metric}</small></td><td>${previous?'Non disponibile':r.before+' '+r.metric}</td></tr>`).join('')}</tbody></table></div><p class="source-note">Confronto descrittivo tra periodi: la variazione non dimostra un effetto causale della comunicazione. Output e risultati di natura diversa non vengono sommati.</p></section>
- <section class="workspace-section"><div class="panel-head"><h3>Alpha · dal segnale all'attivazione</h3><span class="pill">Solo insight</span></div><div class="reading-blocks"><div><h4>Conoscenza della customer base</h4><p>Insight esterni, comportamentali e territoriali collegano il bisogno emergente a un'agenzia candidata e a una proposta pertinente.</p></div></div>${(area?[area]:areas).map(a=>`<article class="alpha-area"><h4>${a.name}</h4><dl class="alpha-steps"><div><dt>Bisogno emerso</dt><dd>${a.need}</dd></div><div><dt>Agenzia candidata</dt><dd>${a.agency}<small>Segnaposto da validare</small></dd></div><div><dt>Proposta da valutare</dt><dd>${a.proposal}</dd></div></dl></article>`).join('')}<div class="reading-note"><p><strong>Fonte e dati acquisiti</strong><br>Insight Alpha simulati. Nessun record individuale o dato raw acquisito.</p><p><strong>Stato delle proposte</strong><br>Agenzie e proposte sono ipotesi da validare con il team territoriale; non indicano incarichi attivi.</p></div></section>`;
+ <section class="workspace-section"><div class="panel-head"><h3>Alpha · dal segnale all'attivazione</h3></div><div class="reading-blocks"><div><h4>Conoscenza della customer base</h4><p>Insight esterni, comportamentali e territoriali collegano il bisogno emergente a un'agenzia candidata e a una proposta pertinente.</p></div></div>${(area?[area]:areas).map(a=>`<article class="alpha-area"><h4>${a.name}</h4><dl class="alpha-steps"><div><dt>Bisogno emerso</dt><dd>${a.need}</dd></div><div><dt>Agenzia candidata</dt><dd>${a.agency}<small>Segnaposto da validare</small></dd></div><div><dt>Proposta da valutare</dt><dd>${a.proposal}</dd></div></dl></article>`).join('')}<div class="reading-note"><p><strong>Stato delle proposte</strong><br>Agenzie e proposte sono ipotesi da validare con il team territoriale; non indicano incarichi attivi.</p></div></section>`;
  document.querySelector('#territory-summary-metrics').replaceChildren(document.querySelector('#territory-content .territory-metrics'));
  document.querySelectorAll('[data-area]').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#area-filter').value=b.dataset.area;renderTerritory();}));
 }
